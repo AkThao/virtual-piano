@@ -1,11 +1,13 @@
 """
 Audio Project - Virtual Piano Program
-Stephanie Chan
-09/14/12
+Original Creator – Stephanie Chan
+Updated for Python 3.x – Akaash Thao
+03/04/20
 
 Dependencies:
-Python 2.7
-NumPy, SciPy, PyGame, Scikits.samplerate
+Python 3
+NumPy, PyGame
+git+https://github.com/gregorias/samplerate.git (install using pip)
 """
 
 import numpy, pygame, sys,os
@@ -33,7 +35,7 @@ def generate_scale():
     
     # Generate the Sound objects from the dictionary.
     scale_dict = {}
-    for key,value in ratio_dict.iteritems():
+    for key,value in ratio_dict.items():
         smp = resample(sndarray, value,"sinc_fastest").astype(sndarray.dtype)
         # Use the key, currently a string, as a variable
         scale_dict[key] = pygame.sndarray.make_sound(smp)
@@ -45,9 +47,9 @@ def load_image(name):
     """
     try:
         image = pygame.image.load(name)
-    except pygame.error, message:
-        print 'Cannot load image:', name
-        raise SystemExit, message
+    except pygame.error as message:
+        print('Cannot load image:', name)
+        raise SystemExit
     image = image.convert()
     return image, image.get_rect()
         
@@ -85,7 +87,7 @@ class Keyboard(pygame.sprite.Sprite):
             self.image, self.rect = load_image('pressed-key.png')
         self.rect.topleft = self.x, self.y
         # wait one second before performing unhighlighting the key
-        self.clock.set_timer(1, 1000)
+        pygame.time.set_timer(1, 1000)
 
     def unpressed(self):
         if self.sharp:
@@ -109,7 +111,7 @@ def main():
     background = pygame.Surface(screen.get_size())
     background = background.convert()
 
-    # Text information to go o background
+    # Text information to go on background
     if pygame.font:
         font = pygame.font.Font(None, 36)
         title = font.render("Virtual Piano", 1, (255, 255, 255))
